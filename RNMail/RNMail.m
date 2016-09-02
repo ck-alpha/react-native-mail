@@ -63,8 +63,8 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
             [mail setBccRecipients:bccRecipients];
         }
 
-        if (options[@"attachment"] && options[@"attachment"][@"path"] && options[@"attachment"][@"type"]){
-            NSString *attachmentPath = [RCTConvert NSString:options[@"attachment"][@"path"]];
+        if (options[@"attachment"] && options[@"attachment"][@"data"] && options[@"attachment"][@"type"]){
+            NSData *fileData = [RCTConvert NSData:options[@"attachment"][@"data"]];
             NSString *attachmentType = [RCTConvert NSString:options[@"attachment"][@"type"]];
             NSString *attachmentName = [RCTConvert NSString:options[@"attachment"][@"name"]];
 
@@ -72,9 +72,6 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
             if (!attachmentName) {
                 attachmentName = [[attachmentPath lastPathComponent] stringByDeletingPathExtension];
             }
-
-            // Get the resource path and read the file using NSData
-            NSData *fileData = [NSData dataWithContentsOfFile:attachmentPath];
 
             // Determine the MIME type
             NSString *mimeType;
