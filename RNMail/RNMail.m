@@ -64,13 +64,13 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
         }
 
         if (options[@"attachment"] && options[@"attachment"][@"data"] && options[@"attachment"][@"type"]){
-            NSData *fileData = [RCTConvert NSData:options[@"attachment"][@"data"]];
+            NSString *fileDataString = [RCTConvert NSString:options[@"attachment"][@"data"]];
             NSString *attachmentType = [RCTConvert NSString:options[@"attachment"][@"type"]];
             NSString *attachmentName = [RCTConvert NSString:options[@"attachment"][@"name"]];
 
             // Set default filename if not specificed
             if (!attachmentName) {
-                attachmentName = [[attachmentPath lastPathComponent] stringByDeletingPathExtension];
+                attachmentName = @"nonamespecified.pdf";
             }
 
             // Determine the MIME type
@@ -99,6 +99,7 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
             }
 
             // Add attachment
+            NSData* fileData = [fileDataString dataUsingEncoding:NSUTF8StringEncoding];
             [mail addAttachmentData:fileData mimeType:mimeType fileName:attachmentName];
         }
 
